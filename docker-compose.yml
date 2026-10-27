@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: havoc
+      POSTGRES_USER: havoc_user
+      POSTGRES_PASSWORD: havoc_pass
+    ports:
+      - "127.0.0.1:5448:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
