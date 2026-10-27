@@ -42,6 +42,7 @@ app.use('/api/checadas', require('./routes/checadas'));
 app.use('/api/usuarios', authMiddleware, require('./routes/usuarios'));
 app.use('/api/modulos',  authMiddleware, require('./routes/modulos'));
 app.use('/api/leads',    authMiddleware, require('./routes/leads'));
+app.use('/api/materiales', authMiddleware, require('./routes/materiales'));
 
 app.use(errorHandler);
 

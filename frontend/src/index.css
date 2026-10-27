@@ -2,13 +2,36 @@
 @import "tailwindcss";
 
 :root {
-  /* Marca HAVOC: ciruela base, violeta acento (nunca fondo dominante) */
-  --color-primary:   #ECE8F5;
-  --color-accent:    #5B21B6;
-  --color-violet:    #8B5CF6;
-  --color-dark:      #1E1533;
-  --color-sage:      #DDD6EA;
-  --color-cream:     #F7F6FA;
+  /* Marca HAVOC, tema oscuro: cuerpo negro-ciruela con violeta; barra superior gris/blanco/negro */
+  color-scheme: dark;
+  --color-cream:     #0E0A18;  /* fondo de página */
+  --color-card:      #1E1533;  /* tarjetas y modales (ciruela) */
+  --color-primary:   #2A1F45;  /* encabezados de tabla, zonas suaves */
+  --color-sage:      #3A2D5C;  /* bordes */
+  --color-dark:      #EDEAF5;  /* texto */
+  --color-accent:    #7C3AED;  /* botones */
+  --color-violet:    #A78BFA;  /* acentos de texto/íconos */
+}
+
+/* Las pantallas heredadas usan grises/azules de Tailwind: se reinterpretan para fondo oscuro */
+@theme {
+  --color-gray-50:  #241A3D;
+  --color-gray-100: #2A1F45;
+  --color-gray-200: #3A2D5C;
+  --color-gray-300: #4C3D72;
+  --color-gray-400: #8E84A8;
+  --color-gray-500: #A79FBF;
+  --color-gray-600: #C4BED6;
+  --color-gray-700: #D9D5E5;
+  --color-gray-800: #ECEAF3;
+  --color-gray-900: #F7F6FA;
+  --color-blue-50:  #2A1F45;
+  --color-blue-100: #3A2D5C;
+  --color-blue-200: #4C3D72;
+  --color-blue-500: #8B5CF6;
+  --color-blue-600: #A78BFA;
+  --color-blue-700: #8B5CF6;
+  --color-blue-800: #7C3AED;
 }
 
 body {
@@ -18,12 +41,15 @@ body {
   background-color: var(--color-cream);
 }
 
+/* Sin capa: gana sobre la utilidad de Tailwind. Las "hojas blancas" ahora son ciruela */
+.bg-white { background-color: var(--color-card); }
+
 h1, h2, h3, .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
 .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 
 /* Impresión de cotización: solo sale .print-area */
 @media print {
-  body { background: white; }
+  body { background: white; color: #1E1533; }
   body:has(.print-area) * { visibility: hidden; }
   body:has(.print-area) :is(.print-area, .print-area *) { visibility: visible; }
   .print-area { position: absolute; left: 0; top: 0; width: 100%; }

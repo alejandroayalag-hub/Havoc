@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../assets/havoc-wordmark.svg';
+import logo from '../assets/havoc-wordmark-claro.svg';
 
 export default function CambiarPasswordPage() {
   const [password, setPassword] = useState('');

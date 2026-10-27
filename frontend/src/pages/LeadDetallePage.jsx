@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MessageCircle, Printer, Trash2 } from 'lucide-react';
 import {
-  getLead, updateLead, deleteLead, getModulos, createCotizacion, deleteCotizacion,
+  getLead, updateLead, deleteLead, getModulos, createCotizacion, deleteCotizacion, getMateriales,
   ETAPAS, etapa, dinero,
 } from '../api/ventas';
 import logo from '../assets/havoc-wordmark.svg';
+import MaterialCard from '../components/MaterialCard';
 
 const input = 'w-full border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
 const CAMPOS = [
@@ -31,6 +32,7 @@ export default function LeadDetallePage() {
   const [lead, setLead] = useState(null);
   const [form, setForm] = useState(null);
   const [modulos, setModulos] = useState([]);
+  const [materiales, setMateriales] = useState([]);
   const [lineas, setLineas] = useState(null); // null = cotizador cerrado
   const [notasCot, setNotasCot] = useState('');
   const [imprimir, setImprimir] = useState(null);
@@ -39,7 +41,7 @@ export default function LeadDetallePage() {
 
   const cargar = () => getLead(id).then(l => { setLead(l); setForm(l); })
     .catch(e => setError(e.response?.data?.error || 'No se pudo cargar'));
-  useEffect(() => { cargar(); getModulos().then(setModulos).catch(() => {}); }, [id]);
+  useEffect(() => { cargar(); getModulos().then(setModulos).catch(() => {}); getMateriales().then(setMateriales).catch(() => {}); }, [id]);
 
   useEffect(() => {
     if (!imprimir) return;
@@ -97,6 +99,9 @@ export default function LeadDetallePage() {
   if (!lead) return <p className="opacity-60">{error || 'Cargando…'}</p>;
   const wa = whatsapp(lead.telefono);
   const t = lineas && totales(lineas);
+  // Material general + el de los módulos que se le cotizaron (todo si aún no hay cotización)
+  const cotizados = new Set(lead.cotizaciones.flatMap(c => c.items.map(i => i.modulo_id)).filter(Boolean));
+  const material = materiales.filter(m => !m.modulo_id || !cotizados.size || cotizados.has(m.modulo_id));
 
   return (
     <div>
@@ -260,6 +265,15 @@ export default function LeadDetallePage() {
               );
             })}
             {!lead.cotizaciones.length && !lineas && <p className="text-sm opacity-50">Aún no hay cotizaciones.</p>}
+
+            <h2 className="text-lg font-semibold mt-8 mb-1">Material para enviar</h2>
+            <p className="text-xs opacity-60 mb-3">
+              {cotizados.size ? 'Material general y el de los módulos que se le cotizaron.' : 'Todo el material; al cotizar se filtra a sus módulos.'}
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {material.map(m => <MaterialCard key={m.id} m={m} whatsapp={wa} />)}
+              {!material.length && <p className="text-sm opacity-50">No hay material ligado a estos módulos.</p>}
+            </div>
           </div>
         </div>
       </div>
