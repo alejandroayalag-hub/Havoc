@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { getLeads, createLead, ETAPAS, etapa } from '../api/ventas';
 
-const input = 'border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
+const input = 'min-w-0 border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
 
 export default function LeadsPage() {
   const navigate = useNavigate();
@@ -50,27 +50,35 @@ export default function LeadsPage() {
                onChange={e => setNuevo({ ...nuevo, telefono: e.target.value })} />
         <input className={input} placeholder="¿Qué necesita?" value={nuevo.necesidad}
                onChange={e => setNuevo({ ...nuevo, necesidad: e.target.value })} />
-        <button disabled={guardando} className="rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        <button disabled={guardando} className="rounded-lg px-4 py-2 text-sm font-medium text-white whitespace-nowrap disabled:opacity-50"
                 style={{ backgroundColor: 'var(--color-accent)' }}>
           + Agregar
         </button>
         {error && <p className="text-sm text-red-600 md:col-span-4">{error}</p>}
       </form>
 
-      <div className="flex flex-wrap gap-2 mb-4 items-center">
-        {[{ key: '', label: 'Todos' }, ...ETAPAS].map(e => {
-          const n = e.key ? leads.filter(l => l.etapa === e.key).length : leads.length;
+      {/* Contadores por etapa: clic filtra, segundo clic quita el filtro */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+        {ETAPAS.map(e => {
           const activo = filtro === e.key;
           return (
-            <button key={e.key} onClick={() => setParams(e.key ? { etapa: e.key } : {})}
-                    className="text-xs px-3 py-1.5 rounded-full border"
-                    style={activo
-                      ? { backgroundColor: 'var(--color-dark)', color: 'white', borderColor: 'var(--color-dark)' }
-                      : { borderColor: 'var(--color-sage)', backgroundColor: 'white' }}>
-              {e.label} <span className="font-mono opacity-70">{n}</span>
+            <button key={e.key} onClick={() => setParams(activo ? {} : { etapa: e.key })}
+                    className="text-left bg-white rounded-xl border-2 p-4 hover:shadow-md transition-shadow"
+                    style={{ borderColor: activo ? e.color : 'var(--color-sage)' }}>
+              <p className="font-mono text-3xl" style={{ color: e.color }}>{leads.filter(l => l.etapa === e.key).length}</p>
+              <p className="text-xs mt-1 opacity-70">{e.label}</p>
             </button>
           );
         })}
+      </div>
+
+      <div className="flex flex-wrap gap-2 mb-4 items-center">
+        {filtro && (
+          <button onClick={() => setParams({})} className="text-xs px-3 py-1.5 rounded-full border bg-white"
+                  style={{ borderColor: 'var(--color-sage)' }}>
+            {etapa(filtro).label} ✕
+          </button>
+        )}
         <input className={`${input} ml-auto w-full md:w-64`} placeholder="Buscar…" value={q} onChange={e => setQ(e.target.value)} />
       </div>
 

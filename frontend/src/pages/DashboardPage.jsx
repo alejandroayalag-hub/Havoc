@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Target, LayoutGrid, Users } from 'lucide-react';
-import { getLeads, ETAPAS } from '../api/ventas';
 
 const MODULOS = [
   { label: 'Leads de venta', desc: 'Prospectos, etapas y cotizaciones', to: '/leads', Icon: Target },
@@ -11,27 +9,11 @@ const MODULOS = [
 
 export default function DashboardPage() {
   const rol = localStorage.getItem('rol');
-  const [leads, setLeads] = useState([]);
-
-  useEffect(() => { getLeads().then(setLeads).catch(() => {}); }, []);
-
-  const porEtapa = Object.fromEntries(ETAPAS.map(e => [e.key, leads.filter(l => l.etapa === e.key).length]));
 
   return (
     <div className="py-4">
       <h1 className="text-2xl font-bold mb-1">Control sobre el caos operativo.</h1>
       <p className="text-sm opacity-60 mb-8">HAVOC — Soluciones Integradas</p>
-
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
-        {ETAPAS.map(e => (
-          <Link key={e.key} to={`/leads?etapa=${e.key}`}
-                className="bg-white rounded-xl border p-4 hover:shadow-md transition-shadow"
-                style={{ borderColor: 'var(--color-sage)' }}>
-            <p className="font-mono text-3xl" style={{ color: e.color }}>{porEtapa[e.key]}</p>
-            <p className="text-xs mt-1 opacity-70">{e.label}</p>
-          </Link>
-        ))}
-      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         {MODULOS.filter(m => !m.adminOnly || rol === 'admin').map(m => (
