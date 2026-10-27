@@ -20,7 +20,8 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:3000',
     'http://62.238.3.136:8102',
-    'https://control.havocdev.mx',
+    'https://app.havocdev.mx',
+    'http://app.havocdev.mx',
   ],
   credentials: true,
 }));
