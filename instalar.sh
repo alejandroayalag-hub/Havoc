@@ -6,7 +6,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SSHC="ssh -i $HOME/.ssh/id_ed25519 -o IdentitiesOnly=yes"
 SERVER="root@62.238.3.136"
-INST=havoc-control; PBACK=3019; PDB=5448; PWEB=8102; DOMINIO=app.havocdev.mx
+INST=havoc-control; PBACK=3019; PDB=5448; PWEB=8104; DOMINIO=app.havocdev.mx
 DIR="/home/apps/$INST"
 
 $SSHC $SERVER "test ! -e $DIR || { echo '✗ $DIR ya existe'; exit 1; }
