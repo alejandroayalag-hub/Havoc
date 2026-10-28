@@ -344,7 +344,7 @@ function CotizacionImpresa({ lead, c }) {
       </table>
 
       <p className="text-xs mt-4 opacity-70">
-        La mensualidad cubre hosting y mantenimiento de sus datos en el servidor.
+        El desarrollo incluye diseño, adecuación e implementación. La mensualidad cubre hosting y mantenimiento de sus datos en el servidor.
       </p>
       {c.notas && <p className="mt-6 text-sm whitespace-pre-line">{c.notas}</p>}
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
+import { ExternalLink, Pencil, X } from 'lucide-react';
 import { getModulos, createModulo, updateModulo, dinero } from '../api/ventas';
 
 const input = 'w-full border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
@@ -8,7 +8,7 @@ const ESTADO = {
   sin_empaquetar: { label: 'Sin empaquetar',    color: '#B45309' },
 };
 const VACIO = { nombre: '', descripcion: '', para_quien: '', funciones: '', precio_desarrollo: '',
-                mensualidad: '', estado: 'listo', proyecto_origen: '', activo: true };
+                mensualidad: '', estado: 'listo', proyecto_origen: '', activo: true, demo_url: '' };
 
 export default function CatalogoPage() {
   const esAdmin = localStorage.getItem('rol') === 'admin';
@@ -38,13 +38,24 @@ export default function CatalogoPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {visibles.map(m => (
-          <button key={m.id} onClick={() => esAdmin && setEditando(m)}
-                  className={`text-left bg-white border rounded-xl p-5 flex flex-col ${esAdmin ? 'hover:shadow-md' : 'cursor-default'} ${m.activo ? '' : 'opacity-50'}`}
-                  style={{ borderColor: 'var(--color-sage)' }}>
+          <div key={m.id}
+               className={`group relative text-left bg-white border rounded-xl p-5 flex flex-col hover:shadow-md ${m.activo ? '' : 'opacity-50'}`}
+               style={{ borderColor: 'var(--color-sage)' }}>
+            {/* Vista previa al pasar el cursor (solo escritorio) */}
+            {m.miniatura && (
+              <img src={m.miniatura} alt={`Vista previa de ${m.nombre}`} loading="lazy"
+                   className="hidden md:group-hover:block absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[34rem] max-w-[90vw] rounded-lg shadow-2xl border-2 z-30 pointer-events-none"
+                   style={{ borderColor: 'var(--color-violet)' }} />
+            )}
             <div className="flex items-start gap-2 mb-1">
               <h2 className="font-semibold flex-1">{m.nombre}</h2>
               <span className="text-[10px] px-2 py-0.5 rounded-full text-white whitespace-nowrap"
                     style={{ backgroundColor: ESTADO[m.estado].color }}>{ESTADO[m.estado].label}</span>
+              {esAdmin && (
+                <button onClick={() => setEditando(m)} aria-label={`Editar ${m.nombre}`} className="opacity-60 hover:opacity-100">
+                  <Pencil className="w-4 h-4" />
+                </button>
+              )}
             </div>
             {m.proyecto_origen && <p className="font-mono text-[11px] mb-2" style={{ color: 'var(--color-accent)' }}>{m.proyecto_origen}</p>}
             <p className="text-sm opacity-80 mb-2">{m.descripcion}</p>
@@ -53,8 +64,16 @@ export default function CatalogoPage() {
             <div className="mt-auto flex gap-4 pt-3 border-t text-sm" style={{ borderColor: 'var(--color-sage)' }}>
               <span><span className="text-xs opacity-50 block">Desarrollo</span><span className="font-mono">{dinero(m.precio_desarrollo)}</span></span>
               <span><span className="text-xs opacity-50 block">Mensualidad</span><span className="font-mono">{dinero(m.mensualidad)}</span></span>
+              {m.demo_url
+                ? <a href={m.demo_url} target="_blank" rel="noreferrer"
+                     className="ml-auto self-center flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg text-white whitespace-nowrap"
+                     style={{ backgroundColor: 'var(--color-accent)' }}>
+                    Ver funcionando <ExternalLink className="w-3 h-3" />
+                  </a>
+                : <span className="ml-auto self-center text-[11px] opacity-40">Demo pendiente</span>}
             </div>
-          </button>
+            <p className="text-[11px] opacity-50 mt-1">Desarrollo incluye diseño, adecuación e implementación.</p>
+          </div>
         ))}
       </div>
 
@@ -65,7 +84,7 @@ export default function CatalogoPage() {
 
 function ModuloModal({ modulo, onClose, onSave }) {
   const [form, setForm] = useState({ ...VACIO, ...modulo,
-    precio_desarrollo: modulo.precio_desarrollo ?? '', mensualidad: modulo.mensualidad ?? '' });
+    precio_desarrollo: modulo.precio_desarrollo ?? '', mensualidad: modulo.mensualidad ?? '', demo_url: modulo.demo_url ?? '' });
   const [error, setError] = useState('');
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -106,6 +125,7 @@ function ModuloModal({ modulo, onClose, onSave }) {
           {campo('precio_desarrollo', 'Precio desarrollo (MXN)', { type: 'number', min: 0, step: '0.01', className: `${input} font-mono` })}
           {campo('mensualidad', 'Mensualidad (MXN)', { type: 'number', min: 0, step: '0.01', className: `${input} font-mono` })}
         </div>
+        {campo('demo_url', 'URL de la demo (ver funcionando)', { type: 'url', placeholder: 'http://…' })}
         <div className="grid grid-cols-2 gap-3">
           <label className="block">
             <span className="text-xs font-medium opacity-70">Estado</span>

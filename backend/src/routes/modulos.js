@@ -4,18 +4,19 @@ const pool = require('../db/pool');
 const { requireRol } = require('../middleware/roles');
 
 const CAMPOS = ['nombre', 'descripcion', 'para_quien', 'funciones', 'precio_desarrollo',
-                'mensualidad', 'estado', 'proyecto_origen', 'activo'];
+                'mensualidad', 'estado', 'proyecto_origen', 'activo', 'demo_url'];
 const ESTADOS = ['listo', 'sin_empaquetar'];
 
 function validar(body) {
   if (body.estado !== undefined && !ESTADOS.includes(body.estado)) return 'Estado inválido';
   for (const k of ['precio_desarrollo', 'mensualidad'])
     if (body[k] !== undefined && body[k] !== null && body[k] !== '' && !(Number(body[k]) >= 0)) return `${k} inválido`;
+  if (body.demo_url && !/^https?:\/\//.test(body.demo_url)) return 'La URL de la demo debe empezar con http:// o https://';
   return null;
 }
 
 // '' en precios → NULL (precio sin definir)
-const valor = (k, v) => (['precio_desarrollo', 'mensualidad'].includes(k) && v === '' ? null : v);
+const valor = (k, v) => (['precio_desarrollo', 'mensualidad', 'demo_url'].includes(k) && v === '' ? null : v);
 
 router.get('/', async (req, res) => {
   const { rows } = await pool.query(
