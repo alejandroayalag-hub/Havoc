@@ -44,6 +44,10 @@ app.use('/api/usuarios', authMiddleware, require('./routes/usuarios'));
 app.use('/api/modulos',  authMiddleware, require('./routes/modulos'));
 app.use('/api/leads',    authMiddleware, require('./routes/leads'));
 app.use('/api/materiales', authMiddleware, require('./routes/materiales'));
+// ponytail: clientes y finanzas solo admin (hoy los 2 usuarios lo son); abrir clientes sin montos si entra personal de ventas
+const { requireRol } = require('./middleware/roles');
+app.use('/api/clientes', authMiddleware, requireRol('admin'), require('./routes/clientes'));
+app.use('/api/finanzas', authMiddleware, requireRol('admin'), require('./routes/finanzas'));
 
 app.use(errorHandler);
 

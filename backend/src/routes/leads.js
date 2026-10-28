@@ -25,8 +25,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const { rows } = await pool.query(
-    `SELECT l.*, u.nombre AS creado_por_nombre FROM leads l
-     LEFT JOIN usuarios u ON u.id = l.created_by WHERE l.id = $1`, [req.params.id]);
+    `SELECT l.*, u.nombre AS creado_por_nombre, (SELECT id FROM clientes WHERE lead_id = l.id) AS cliente_id
+     FROM leads l LEFT JOIN usuarios u ON u.id = l.created_by WHERE l.id = $1`, [req.params.id]);
   if (!rows[0]) return res.status(404).json({ error: 'Lead no encontrado' });
   const { rows: cotizaciones } = await pool.query(
     `SELECT c.*, u.nombre AS creado_por_nombre,

@@ -5,6 +5,7 @@ import {
   getLead, updateLead, deleteLead, getModulos, createCotizacion, deleteCotizacion, getMateriales,
   ETAPAS, etapa, dinero,
 } from '../api/ventas';
+import { clienteDesdeLead } from '../api/clientes';
 import logo from '../assets/havoc-wordmark.svg';
 import MaterialCard from '../components/MaterialCard';
 
@@ -91,6 +92,15 @@ export default function LeadDetallePage() {
     } catch (err) { fallo(err); }
   }
 
+  async function convertir() {
+    const ultima = lead.cotizaciones[0];
+    if (!window.confirm(ultima
+      ? `¿Convertir en cliente con los sistemas y el cobro de desarrollo de ${folio(ultima.id)}?`
+      : '¿Convertir en cliente? No tiene cotización: se crea sin sistemas.')) return;
+    setError('');
+    try { const c = await clienteDesdeLead(id); navigate(`/clientes/${c.id}`); } catch (err) { fallo(err); }
+  }
+
   async function borrarCotizacion(c) {
     if (!window.confirm(`¿Borrar ${folio(c.id)}?`)) return;
     try { await deleteCotizacion(id, c.id); cargar(); } catch (err) { fallo(err); }
@@ -112,13 +122,21 @@ export default function LeadDetallePage() {
           <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: etapa(lead.etapa).color }}>
             {etapa(lead.etapa).label}
           </span>
+          <div className="ml-auto flex flex-wrap gap-2">
+          {rol === 'admin' && (lead.cliente_id
+            ? <Link to={`/clientes/${lead.cliente_id}`} className="text-sm px-3 py-1.5 rounded-lg border bg-white" style={{ borderColor: 'var(--color-sage)' }}>Ver cliente →</Link>
+            : lead.etapa !== 'perdido' && (
+              <button onClick={convertir} className="text-sm px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: '#15803D' }}>
+                Ganado → convertir en cliente
+              </button>))}
           {wa && (
             <a href={wa} target="_blank" rel="noreferrer"
-               className="ml-auto flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg border bg-white"
+               className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg border bg-white"
                style={{ borderColor: 'var(--color-sage)' }}>
               <MessageCircle className="w-4 h-4" /> WhatsApp
             </a>
           )}
+          </div>
         </div>
 
         {error && <p className="mb-4 text-sm text-red-600">{error}</p>}

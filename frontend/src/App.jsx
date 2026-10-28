@@ -10,6 +10,9 @@ import LeadsPage from './pages/LeadsPage';
 import LeadDetallePage from './pages/LeadDetallePage';
 import CatalogoPage from './pages/CatalogoPage';
 import MarketingPage from './pages/MarketingPage';
+import ClientesPage from './pages/ClientesPage';
+import ClienteDetallePage from './pages/ClienteDetallePage';
+import FinanzasPage from './pages/FinanzasPage';
 import LoginPage from './pages/LoginPage';
 import CambiarPasswordPage from './pages/CambiarPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -57,6 +60,8 @@ function Layout() {
           <NavItem to="/leads">Leads</NavItem>
           <NavItem to="/catalogo">Catálogo</NavItem>
           <NavItem to="/marketing">Marketing</NavItem>
+          {rol === 'admin' && <NavItem to="/clientes">Clientes</NavItem>}
+          {rol === 'admin' && <NavItem to="/finanzas">Finanzas</NavItem>}
           {rol === 'admin' && <NavItem to="/empleados">Personal</NavItem>}
         </div>
 
@@ -80,6 +85,9 @@ function Layout() {
           <Route path="/leads/:id" element={<LeadDetallePage />} />
           <Route path="/catalogo" element={<CatalogoPage />} />
           <Route path="/marketing" element={<MarketingPage />} />
+          {rol === 'admin' && <Route path="/clientes" element={<ClientesPage />} />}
+          {rol === 'admin' && <Route path="/clientes/:id" element={<ClienteDetallePage />} />}
+          {rol === 'admin' && <Route path="/finanzas" element={<FinanzasPage />} />}
           {rol === 'admin' && <Route path="/empleados" element={<EmpleadosPage />} />}
           {rol === 'admin' && <Route path="/empleados/nuevo" element={<EmpleadoFormPage />} />}
           {rol === 'admin' && <Route path="/empleados/:id" element={<EmpleadoDetallePage />} />}
