@@ -81,6 +81,7 @@ export default function ClienteDetallePage() {
         <h1 className="text-2xl font-bold">{cliente.nombre}</h1>
         {!cliente.activo && <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-500 text-white">Inactivo</span>}
         {cliente.lead_id && <Link to={`/leads/${cliente.lead_id}`} className="text-xs opacity-60 hover:underline">ver lead</Link>}
+        <Link to={`/agenda?cliente=${cliente.id}`} className="text-xs opacity-60 hover:underline">agendar</Link>
         <span className="ml-auto text-sm">
           <span className="opacity-60">Mensualidad </span><span className="font-mono">{dinero(mensual)}</span>
           <span className="opacity-60 ml-4">Debe </span>

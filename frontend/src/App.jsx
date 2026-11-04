@@ -13,6 +13,7 @@ import MarketingPage from './pages/MarketingPage';
 import ClientesPage from './pages/ClientesPage';
 import ClienteDetallePage from './pages/ClienteDetallePage';
 import FinanzasPage from './pages/FinanzasPage';
+import AgendaPage from './pages/AgendaPage';
 import LoginPage from './pages/LoginPage';
 import CambiarPasswordPage from './pages/CambiarPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -57,6 +58,7 @@ function Layout() {
 
         <div className="flex gap-1 flex-1 flex-wrap">
           <NavItem to="/" end>Inicio</NavItem>
+          <NavItem to="/agenda">Agenda</NavItem>
           <NavItem to="/leads">Leads</NavItem>
           <NavItem to="/catalogo">Catálogo</NavItem>
           <NavItem to="/marketing">Marketing</NavItem>
@@ -81,6 +83,7 @@ function Layout() {
       <main className="max-w-7xl mx-auto p-4 md:p-6 relative">
         <Routes>
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/agenda" element={<AgendaPage />} />
           <Route path="/leads" element={<LeadsPage />} />
           <Route path="/leads/:id" element={<LeadDetallePage />} />
           <Route path="/catalogo" element={<CatalogoPage />} />

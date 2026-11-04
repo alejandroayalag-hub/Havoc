@@ -123,6 +123,7 @@ export default function LeadDetallePage() {
             {etapa(lead.etapa).label}
           </span>
           <div className="ml-auto flex flex-wrap gap-2">
+          <Link to={`/agenda?lead=${lead.id}`} className="text-sm px-3 py-1.5 rounded-lg border bg-white" style={{ borderColor: 'var(--color-sage)' }}>Agendar</Link>
           {rol === 'admin' && (lead.cliente_id
             ? <Link to={`/clientes/${lead.cliente_id}`} className="text-sm px-3 py-1.5 rounded-lg border bg-white" style={{ borderColor: 'var(--color-sage)' }}>Ver cliente →</Link>
             : lead.etapa !== 'perdido' && (
