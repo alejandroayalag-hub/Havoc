@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Target, LayoutGrid, Megaphone, Users, Building2, Wallet, CalendarDays } from 'lucide-react';
+import { Target, LayoutGrid, Megaphone, Users, Building2, Wallet, CalendarDays, Lightbulb } from 'lucide-react';
 
 const MODULOS = [
   { label: 'Agenda', desc: 'Reuniones, entregas, capacitaciones y cobros del mes', to: '/agenda', Icon: CalendarDays },
   { label: 'Leads de venta', desc: 'Prospectos, etapas y cotizaciones', to: '/leads', Icon: Target },
   { label: 'Catálogo', desc: 'Módulos listos para vender y sus precios', to: '/catalogo', Icon: LayoutGrid },
   { label: 'Marketing', desc: 'Logos, presentaciones y videos demo para mandar', to: '/marketing', Icon: Megaphone },
+  { label: 'Ideas de módulos', desc: 'Lo que piden leads y clientes, y cuántos lo piden', to: '/ideas', Icon: Lightbulb },
   { label: 'Clientes', desc: 'Sistemas instalados, mensualidades y quién debe', to: '/clientes', Icon: Building2, adminOnly: true },
   { label: 'Finanzas', desc: 'Cobros, gastos y ganancia por mes y por cliente', to: '/finanzas', Icon: Wallet, adminOnly: true },
   { label: 'Personal', desc: 'Expedientes, documentos, pagos y checador', to: '/empleados', Icon: Users, adminOnly: true },

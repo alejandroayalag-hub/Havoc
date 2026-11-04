@@ -14,6 +14,7 @@ import ClientesPage from './pages/ClientesPage';
 import ClienteDetallePage from './pages/ClienteDetallePage';
 import FinanzasPage from './pages/FinanzasPage';
 import AgendaPage from './pages/AgendaPage';
+import IdeasPage from './pages/IdeasPage';
 import LoginPage from './pages/LoginPage';
 import CambiarPasswordPage from './pages/CambiarPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -62,6 +63,7 @@ function Layout() {
           <NavItem to="/leads">Leads</NavItem>
           <NavItem to="/catalogo">Catálogo</NavItem>
           <NavItem to="/marketing">Marketing</NavItem>
+          <NavItem to="/ideas">Ideas</NavItem>
           {rol === 'admin' && <NavItem to="/clientes">Clientes</NavItem>}
           {rol === 'admin' && <NavItem to="/finanzas">Finanzas</NavItem>}
           {rol === 'admin' && <NavItem to="/empleados">Personal</NavItem>}
@@ -88,6 +90,7 @@ function Layout() {
           <Route path="/leads/:id" element={<LeadDetallePage />} />
           <Route path="/catalogo" element={<CatalogoPage />} />
           <Route path="/marketing" element={<MarketingPage />} />
+          <Route path="/ideas" element={<IdeasPage />} />
           {rol === 'admin' && <Route path="/clientes" element={<ClientesPage />} />}
           {rol === 'admin' && <Route path="/clientes/:id" element={<ClienteDetallePage />} />}
           {rol === 'admin' && <Route path="/finanzas" element={<FinanzasPage />} />}

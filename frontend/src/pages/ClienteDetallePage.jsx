@@ -6,6 +6,7 @@ import {
   createCobro, updateCobro, deleteCobro, TIPOS_COBRO, dia, fechaCorta, hoy,
 } from '../api/clientes';
 import { getModulos, dinero } from '../api/ventas';
+import NecesidadesCard from '../components/NecesidadesCard';
 
 const input = 'w-full border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
 const caja = 'bg-white border rounded-xl p-5';
@@ -258,6 +259,7 @@ export default function ClienteDetallePage() {
           )}
         </div>
       </div>
+      <NecesidadesCard clienteId={cliente.id} />
     </div>
   );
 }

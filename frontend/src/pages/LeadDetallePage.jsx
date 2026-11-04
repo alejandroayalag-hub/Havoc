@@ -8,6 +8,7 @@ import {
 import { clienteDesdeLead } from '../api/clientes';
 import logo from '../assets/havoc-wordmark.svg';
 import MaterialCard from '../components/MaterialCard';
+import NecesidadesCard from '../components/NecesidadesCard';
 
 const input = 'w-full border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
 const CAMPOS = [
@@ -284,6 +285,8 @@ export default function LeadDetallePage() {
               );
             })}
             {!lead.cotizaciones.length && !lineas && <p className="text-sm opacity-50">Aún no hay cotizaciones.</p>}
+
+            <NecesidadesCard leadId={lead.id} />
 
             <h2 className="text-lg font-semibold mt-8 mb-1">Material para enviar</h2>
             <p className="text-xs opacity-60 mb-3">
