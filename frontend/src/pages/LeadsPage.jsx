@@ -97,6 +97,9 @@ export default function LeadsPage() {
                   className="border-t cursor-pointer hover:bg-violet-50" style={{ borderColor: 'var(--color-sage)' }}>
                 <td className="px-4 py-2">
                   <Link to={`/leads/${l.id}`} className="font-medium">{l.nombre}</Link>
+                  {l.diagnostico_estado === 'enviado' && (
+                    <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full text-white align-middle" style={{ backgroundColor: '#15803D' }}>Diagnóstico listo</span>
+                  )}
                   {l.empresa && <span className="block text-xs opacity-60">{l.empresa}</span>}
                 </td>
                 <td className="px-4 py-2 font-mono text-xs">{l.telefono || '—'}</td>

@@ -9,6 +9,7 @@ import { clienteDesdeLead } from '../api/clientes';
 import logo from '../assets/havoc-wordmark.svg';
 import MaterialCard from '../components/MaterialCard';
 import NecesidadesCard from '../components/NecesidadesCard';
+import DiagnosticoCard from '../components/DiagnosticoCard';
 
 const input = 'w-full border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-300';
 const CAMPOS = [
@@ -190,8 +191,9 @@ export default function LeadDetallePage() {
             </p>
           </form>
 
-          {/* Cotizaciones */}
+          {/* Diagnóstico + cotizaciones */}
           <div>
+            <DiagnosticoCard leadId={lead.id} modulos={modulos} />
             <div className="flex items-center mb-3">
               <h2 className="text-lg font-semibold">Cotizaciones</h2>
               {!lineas && (

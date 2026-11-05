@@ -6,6 +6,8 @@ export const updateModulo  = (id, data) => api.put(`/modulos/${id}`, data).then(
 
 export const getLeads      = (params) => api.get('/leads', { params }).then(r => r.data);
 export const getLead       = (id) => api.get(`/leads/${id}`).then(r => r.data);
+export const getDiagnostico  = (id) => api.get(`/leads/${id}/diagnostico`).then(r => r.data);
+export const saveDiagnostico = (id, data) => api.put(`/leads/${id}/diagnostico`, data).then(r => r.data);
 export const createLead    = (data) => api.post('/leads', data).then(r => r.data);
 export const updateLead    = (id, data) => api.put(`/leads/${id}`, data).then(r => r.data);
 export const deleteLead    = (id) => api.delete(`/leads/${id}`).then(r => r.data);

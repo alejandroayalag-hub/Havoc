@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
   }
   const { rows } = await pool.query(
     `SELECT l.*, u.nombre AS creado_por_nombre,
-            (SELECT COUNT(*)::int FROM cotizaciones c WHERE c.lead_id = l.id) AS num_cotizaciones
+            (SELECT COUNT(*)::int FROM cotizaciones c WHERE c.lead_id = l.id) AS num_cotizaciones,
+            (SELECT estado FROM diagnosticos d WHERE d.lead_id = l.id) AS diagnostico_estado
      FROM leads l LEFT JOIN usuarios u ON u.id = l.created_by
      ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
      ORDER BY l.updated_at DESC`, values);
@@ -108,6 +109,35 @@ router.delete('/:id/cotizaciones/:cid', async (req, res) => {
     'DELETE FROM cotizaciones WHERE id = $1 AND lead_id = $2', [req.params.cid, req.params.id]);
   if (!rowCount) return res.status(404).json({ error: 'Cotización no encontrada' });
   res.json({ ok: true });
+});
+
+// Diagnóstico (cuestionario de Lili). Un registro por lead; enviar=true lo marca listo para Alejandro.
+router.get('/:id/diagnostico', async (req, res) => {
+  const { rows: [d] } = await pool.query(
+    `SELECT d.*, u.nombre AS lleno_nombre FROM diagnosticos d LEFT JOIN usuarios u ON u.id = d.updated_by
+     WHERE d.lead_id = $1`, [req.params.id]);
+  res.json(d || null);
+});
+
+router.put('/:id/diagnostico', async (req, res) => {
+  const r = req.body.respuestas;
+  if (!r || typeof r !== 'object' || Array.isArray(r)) return res.status(400).json({ error: 'Respuestas inválidas' });
+  const enviar = req.body.enviar === true;
+  try {
+    // Una vez enviado se queda enviado aunque Lili lo corrija después
+    const { rows: [d] } = await pool.query(
+      `INSERT INTO diagnosticos (lead_id, respuestas, estado, enviado_at, updated_by)
+       VALUES ($1, $2, CASE WHEN $3::boolean THEN 'enviado' ELSE 'borrador' END, CASE WHEN $3::boolean THEN NOW() END, $4)
+       ON CONFLICT (lead_id) DO UPDATE SET respuestas = EXCLUDED.respuestas, updated_by = EXCLUDED.updated_by, updated_at = NOW(),
+         estado = CASE WHEN $3::boolean THEN 'enviado' ELSE diagnosticos.estado END,
+         enviado_at = CASE WHEN $3::boolean THEN NOW() ELSE diagnosticos.enviado_at END
+       RETURNING *`, [req.params.id, r, enviar, req.user.id]);
+    await pool.query('UPDATE leads SET updated_at = NOW() WHERE id = $1', [req.params.id]);
+    res.json(d);
+  } catch (e) {
+    if (e.code === '23503') return res.status(404).json({ error: 'Lead no encontrado' });
+    throw e;
+  }
 });
 
 module.exports = router;
