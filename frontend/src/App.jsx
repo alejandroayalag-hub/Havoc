@@ -18,6 +18,7 @@ import IdeasPage from './pages/IdeasPage';
 import LoginPage from './pages/LoginPage';
 import CambiarPasswordPage from './pages/CambiarPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import Recados from './components/Recados';
 import logoIcon from './assets/havoc-icon.svg';
 import baculo from './assets/havoc-baculo.svg';
 
@@ -77,6 +78,8 @@ function Layout() {
           </button>
         </div>
       </nav>
+
+      <Recados />
 
       {/* Marca de agua: báculo en la esquina inferior derecha */}
       <img src={baculo} alt="" aria-hidden="true"
