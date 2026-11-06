@@ -63,13 +63,13 @@ export default function Recados() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 print:hidden w-60 text-stone-800">
+    <div className="fixed bottom-8 left-8 z-40 print:hidden w-72 text-stone-800">
       {form ? (
-        <form onSubmit={guardar} className={`${COLORES[form.color]} p-3 rounded-sm shadow-xl space-y-2`}>
-          <textarea autoFocus required maxLength={500} rows={4} value={form.texto}
+        <form onSubmit={guardar} className={`${COLORES[form.color]} w-72 h-72 p-4 flex flex-col gap-2 rounded-sm shadow-[4px_10px_18px_rgba(0,0,0,.55)] -rotate-2`}>
+          <textarea autoFocus required maxLength={500} value={form.texto}
                     onChange={e => setForm({ ...form, texto: e.target.value })}
                     placeholder="Escribe el recado…"
-                    className="w-full bg-transparent border-b border-stone-500/40 text-sm resize-none outline-none placeholder:text-stone-500" />
+                    className="w-full flex-1 bg-transparent font-mano text-2xl leading-tight resize-none outline-none placeholder:text-stone-500" />
           <label className="flex items-center gap-2 text-xs">
             Para:
             <select value={form.para_id} onChange={e => setForm({ ...form, para_id: e.target.value })}
@@ -92,21 +92,21 @@ export default function Recados() {
       ) : (
         <div className="relative">
           {/* hojas de abajo para que se vea pila */}
-          {n > 1 && <div className={`absolute inset-0 ${COLORES[recados[1]?.color] || COLORES.amarillo} rounded-sm shadow rotate-3`} />}
-          {n > 2 && <div className="absolute inset-0 bg-yellow-100 rounded-sm shadow -rotate-3" />}
+          {n > 1 && <div className={`absolute inset-0 ${COLORES[recados[1]?.color] || COLORES.amarillo} rounded-sm shadow-lg rotate-[4deg] translate-x-2`} />}
+          {n > 2 && <div className="absolute inset-0 bg-yellow-100 rounded-sm shadow-lg -rotate-[9deg] -translate-x-1" />}
 
-          <div className={`relative ${r ? COLORES[r.color] : COLORES.amarillo} p-3 rounded-sm shadow-xl -rotate-1 min-h-28`}>
+          <div className={`relative ${r ? COLORES[r.color] : COLORES.amarillo} w-72 h-72 p-4 pt-5 flex flex-col rounded-sm shadow-[4px_10px_18px_rgba(0,0,0,.55)] -rotate-[5deg] hover:-rotate-[2deg] transition-transform`}>
             <div className="flex items-center gap-1 text-[11px] text-stone-600 mb-1">
               <span className="flex-1 truncate">
                 {r ? <>{r.autor_nombre || '—'} → <b>{r.para_nombre || 'Todos'}</b></> : 'Recados'}
               </span>
-              <button onClick={abrirForm} title="Nuevo recado" className="px-1 font-bold hover:text-black">＋</button>
-              <button onClick={() => minimizar(true)} title="Minimizar" className="px-1 font-bold hover:text-black">–</button>
+              <button onClick={abrirForm} title="Nuevo recado" className="px-1.5 text-lg font-bold hover:text-black">＋</button>
+              <button onClick={() => minimizar(true)} title="Minimizar" className="px-1.5 text-lg font-bold hover:text-black">–</button>
             </div>
 
             {r ? (
               <>
-                <p className="text-sm whitespace-pre-wrap break-words max-h-40 overflow-y-auto">{r.texto}</p>
+                <p className="flex-1 font-mano text-2xl leading-tight whitespace-pre-wrap break-words overflow-y-auto">{r.texto}</p>
                 <div className="flex items-center gap-1 mt-2 text-[11px] text-stone-600">
                   <span className="flex-1">{fecha(r.created_at)}</span>
                   {n > 1 && <>
@@ -119,7 +119,7 @@ export default function Recados() {
                 </div>
               </>
             ) : (
-              <button onClick={abrirForm} className="text-sm text-stone-600 hover:text-black">Sin recados. ＋ Pegar uno</button>
+              <button onClick={abrirForm} className="flex-1 font-mano text-2xl text-stone-600 hover:text-black">Sin recados. ＋ Pegar uno</button>
             )}
           </div>
         </div>

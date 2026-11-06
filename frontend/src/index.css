@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -46,6 +46,7 @@ body {
 
 h1, h2, h3, .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
 .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.font-mano { font-family: 'Caveat', cursive; }
 
 /* Impresión de cotización: solo sale .print-area */
 @media print {
